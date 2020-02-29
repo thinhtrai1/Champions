@@ -33,11 +33,16 @@ class ChampStoryFragment : Fragment(){
                 .getElementsByTag("span")[0]
                 .text()
             mActivity.setTitle(name)
+            var nickname = Jsoup.parse(response)
+                .getElementsByClass("style__Intro-sc-14gxj1e-2 fmCNnE")[0]
+                .getElementsByTag("span")[0]
+                .text()
+            mTvNickname.text = nickname
             var story = Jsoup.parse(response)
                 .getElementsByClass("style__Desc-sc-1o884zt-9 hZPZqS")[0]
                 .getElementsByTag("p")[0]
                 .text()
-            mTvStory.text = story
+            mTvStory.text = story.split(" See More")[0]
             var image = Jsoup.parse(response)
                 .getElementsByClass("style__BackgroundImage-sc-1o884zt-2 cIdAXF")[0]
                 .getElementsByTag("img")

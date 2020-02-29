@@ -1,19 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <VideoView
-        android:id="@+id/mVdvSKill"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/mTvKill"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRcvSkill"
+        android:layout_weight="1">
+
+        <VideoView
+            android:id="@+id/mVdvSKill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/mImvPlay"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:padding="5dp"
+        android:src="@drawable/ic_video_play" />
+
+    <TextView
+        android:id="@+id/mTvSKillKey"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:textAllCaps="true"
+        android:textColor="#000"
+        android:textSize="20dp"
+        app:fontFamily="monospace" />
+
+    <TextView
+        android:id="@+id/mTvSKillName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
+        android:textColor="#000"
+        android:textSize="20dp"
+        app:fontFamily="monospace" />
+
+    <TextView
+        android:id="@+id/mTvSKillDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textColor="#000"
+        android:textSize="15dp"
+        app:fontFamily="monospace" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/mImvSkill0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/mImvSkill1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/mImvSkill2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/mImvSkill3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/mImvSkill4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true" />
+    </LinearLayout>
 </LinearLayout>
