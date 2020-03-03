@@ -2,6 +2,7 @@ package com.example.champions.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +30,8 @@ class ChampSkillFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var mActivity = activity as DetailActivity
-        mImvPlay.visibility = View.INVISIBLE
+        mImvPlay.visibility = View.GONE
+        mProgressBar.visibility = View.VISIBLE
 
         var desRequest = StringRequest(Request.Method.GET, mActivity.mUrl, Response.Listener<String> { response ->
             var dess = Jsoup.parse(response)
@@ -82,41 +84,47 @@ class ChampSkillFragment: Fragment() {
 
         mVdvSKill.setOnPreparedListener { mediaPlayer ->
             mImvPlay.visibility = View.VISIBLE
+            mProgressBar.visibility = View.GONE
             mediaPlayer.isLooping = true
         }
 
         mImvSkill0.setOnClickListener {
             if (tvKeyP.currentTextColor == Color.BLACK) {
                 imageClick(0)
-                mImvPlay.visibility = View.INVISIBLE
+                mImvPlay.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
             }
         }
 
         mImvSkill1.setOnClickListener {
             if (tvKeyQ.currentTextColor == Color.BLACK) {
                 imageClick(1)
-                mImvPlay.visibility = View.INVISIBLE
+                mImvPlay.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
             }
         }
 
         mImvSkill2.setOnClickListener {
             if (tvKeyW.currentTextColor == Color.BLACK) {
                 imageClick(2)
-                mImvPlay.visibility = View.INVISIBLE
+                mImvPlay.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
             }
         }
 
         mImvSkill3.setOnClickListener {
             if (tvKeyE.currentTextColor == Color.BLACK) {
                 imageClick(3)
-                mImvPlay.visibility = View.INVISIBLE
+                mImvPlay.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
             }
         }
 
         mImvSkill4.setOnClickListener {
             if (tvKeyR.currentTextColor == Color.BLACK) {
                 imageClick(4)
-                mImvPlay.visibility = View.INVISIBLE
+                mImvPlay.visibility = View.GONE
+                mProgressBar.visibility = View.VISIBLE
             }
         }
     }

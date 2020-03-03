@@ -3,6 +3,7 @@ package com.example.champions.fragments
 import android.os.Build
 import android.os.Bundle
 import android.text.Layout.JUSTIFICATION_MODE_INTER_WORD
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,5 +55,6 @@ class ChampStoryFragment : Fragment(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mTvStory.justificationMode = JUSTIFICATION_MODE_INTER_WORD
         }
+        mTvStory.movementMethod = ScrollingMovementMethod()
     }
 }

@@ -23,6 +23,15 @@
             android:layout_gravity="center_horizontal"
             android:padding="5dp"
             android:src="@drawable/ic_video_play" />
+
+        <ProgressBar
+            android:id="@+id/mProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView
@@ -74,7 +83,9 @@
                 android:id="@+id/mImvSkill0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_image_skill"
+                android:padding="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +111,9 @@
                 android:id="@+id/mImvSkill1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_image_skill"
+                android:padding="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -126,7 +139,9 @@
                 android:id="@+id/mImvSkill2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_image_skill"
+                android:padding="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -152,7 +167,9 @@
                 android:id="@+id/mImvSkill3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_image_skill"
+                android:padding="2dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -178,7 +195,9 @@
                 android:id="@+id/mImvSkill4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_image_skill"
+                android:padding="2dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
