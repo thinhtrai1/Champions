@@ -15,7 +15,6 @@ import com.example.champions.R
 import com.example.champions.activities.DetailActivity
 import com.example.champions.adapters.SkinViewPagerAdapter
 import com.example.champions.adapters.SkinViewPagerAdapterImageView
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_champ_skin.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element

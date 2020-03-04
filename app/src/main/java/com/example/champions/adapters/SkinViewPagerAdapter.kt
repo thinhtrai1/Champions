@@ -1,12 +1,10 @@
 package com.example.champions.adapters
 
 import android.content.Context
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
@@ -67,7 +65,9 @@ class SkinViewPagerAdapter(var mContext: Context, var mList: ArrayList<String>) 
     }
 
     override fun onPageSelected(position: Int) {
-        if (a.mViewPagerSkinImageView.currentItem != position)
+        if (a.mViewPagerSkinImageView.currentItem != position) {
             a.mViewPagerSkinImageView.setCurrentItem(position, true)
+            a.mCurrent = position
+        }
     }
 }

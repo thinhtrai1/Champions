@@ -71,6 +71,7 @@ class ChampSkillFragment: Fragment() {
         Volley.newRequestQueue(mActivity).add(desRequest)
         Volley.newRequestQueue(mActivity).add(imageRequest)
         Volley.newRequestQueue(mActivity).add(vidRequest)
+        mTvSKillDes.movementMethod = ScrollingMovementMethod()
 
         mImvPlay.setOnClickListener {
             if (mVdvSKill.isPlaying) {
