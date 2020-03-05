@@ -29,6 +29,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
+            android:indeterminateTint="#000"
             android:padding="5dp"
             android:visibility="gone" />
     </LinearLayout>
@@ -47,8 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical"
         android:padding="5dp"
+        android:scrollbars="vertical"
         android:textColor="#000"
         android:textSize="15dp"
         app:fontFamily="monospace" />

@@ -7,16 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.example.champions.R
 import com.example.champions.activities.DetailActivity
 import com.example.champions.adapters.SkinViewPagerAdapter
 import com.example.champions.adapters.SkinViewPagerAdapterImageView
 import kotlinx.android.synthetic.main.fragment_champ_skin.*
-import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 class ChampSkinFragment: Fragment() {
@@ -46,19 +41,15 @@ class ChampSkinFragment: Fragment() {
         mViewPagerSkinImageView.setPageTransformer(false, pagerImageAdapter)
         mViewPagerSkinImageView.addOnPageChangeListener(pagerImageAdapter)
 
-        var stringRequest = StringRequest(Request.Method.GET, mActivity.mUrl, Response.Listener<String> { response ->
-            var items = Jsoup.parse(response)
-                .getElementsByClass("style__CarouselContainer-sc-1tlyqoa-11 cUeBFP")[0]
-                .getElementsByTag("div")[1]
-                .getElementsByTag("li")
-            for (item: Element in items) {
-                mList.add(item.getElementsByTag("img")[0].attr("src"))
-            }
-            pagerAdapter.notifyDataSetChanged()
-            pagerImageAdapter.notifyDataSetChanged()
-            mViewPagerSkin.currentItem = 1
-        }, Response.ErrorListener {})
-        if (mList.size == 0)
-            Volley.newRequestQueue(mActivity).add(stringRequest)
+        var items = mActivity.mJsoup
+            .getElementsByClass("style__CarouselContainer-sc-1tlyqoa-11 cUeBFP")[0]
+            .getElementsByTag("div")[1]
+            .getElementsByTag("li")
+        for (item: Element in items) {
+            mList.add(item.getElementsByTag("img")[0].attr("src"))
+        }
+        pagerAdapter.notifyDataSetChanged()
+        pagerImageAdapter.notifyDataSetChanged()
+        mViewPagerSkin.currentItem = 1
     }
 }

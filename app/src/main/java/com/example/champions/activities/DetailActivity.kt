@@ -11,18 +11,23 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.champions.R
 import com.example.champions.adapters.DetailViewPagerAdapter
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_detail.*
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import java.lang.Exception
-import java.util.*
-import kotlin.concurrent.schedule
 
 class DetailActivity : AppCompatActivity() {
-    var mCurrent = 0
     var mUrl = ""
+    var mCurrent = 0
+    lateinit var mJsoup: Document
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +38,15 @@ class DetailActivity : AppCompatActivity() {
         }
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        mUrl = intent.getStringExtra("url")
-
         val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
-        mViewPager.adapter = mAdapter
+        mUrl = intent.getStringExtra("url")
+        Volley.newRequestQueue(this).add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
+            mJsoup = Jsoup.parse(response)
+            mViewPager.adapter = mAdapter
+            mImvTemp.visibility = View.GONE
+            mViewPager.visibility = View.VISIBLE
+        }, Response.ErrorListener {}))
+
         mViewPager.setPageTransformer(false, mAdapter)
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
