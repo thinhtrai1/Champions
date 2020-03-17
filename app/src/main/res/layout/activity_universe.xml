@@ -60,11 +60,20 @@
                 android:adjustViewBounds="true" />
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:paddingHorizontal="5dp"
+            android:textSize="15dp"
+            android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            android:text="Create by Thịnh's Đức\nIngame: Codead\nSource: na.leagueoflegends.com\nv1.17032020"/>
+
         <ImageView
             android:id="@+id/mImage6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:adjustViewBounds="true" />
     </LinearLayout>
 </ScrollView>
