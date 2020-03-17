@@ -3,9 +3,11 @@ package com.example.champions.fragments
 import android.graphics.Color
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.champions.R
 import com.example.champions.activities.DetailActivity
@@ -14,9 +16,9 @@ import kotlinx.android.synthetic.main.fragment_champ_skill.*
 import org.jsoup.nodes.Element
 
 class ChampSkillFragment: Fragment() {
-    var mSkillList: ArrayList<String> = ArrayList()
-    var mDesList: ArrayList<String> = ArrayList()
-    var mVideoList: ArrayList<String> = ArrayList()
+    private var mSkillList: ArrayList<String> = ArrayList()
+    private var mDesList: ArrayList<String> = ArrayList()
+    private var mVideoList: ArrayList<String> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_champ_skill, container, false)
@@ -27,6 +29,11 @@ class ChampSkillFragment: Fragment() {
         var mActivity = activity as DetailActivity
         mImvPlay.visibility = View.GONE
         mProgressBar.visibility = View.VISIBLE
+
+        val metrics = DisplayMetrics()
+        mActivity.windowManager.defaultDisplay.getMetrics(metrics)
+        val layoutParams = LinearLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels * 15 / 22)
+        mVdvSKill.layoutParams = layoutParams
 
         var skills = mActivity.mJsoup
             .getElementsByClass("style__WrapperInner-sc-18a4qs7-1 gFNUaI")[0]

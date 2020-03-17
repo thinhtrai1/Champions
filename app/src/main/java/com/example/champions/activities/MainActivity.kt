@@ -1,8 +1,10 @@
 package com.example.champions.activities
 
+import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -37,6 +39,40 @@ class MainActivity : AppCompatActivity(), MainRecyclerViewAdapter.onItemClickLis
             mAdapter.notifyDataSetChanged()
         }, Response.ErrorListener {})
         Volley.newRequestQueue(this).add(stringRequest)
+
+        var dX = 0f
+        var dY = 0f
+        var d1 = fab.x
+        var d2 = fab.y
+        fab.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    dX = view.x - event.rawX
+                    dY = view.y - event.rawY
+                    d1 = fab.x
+                    d2 = fab.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    view.animate()
+                    .x(event.rawX + dX)
+                    .y(event.rawY + dY)
+                    .setDuration(0)
+                    .start()
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (fab.x in d1 - 5.. d1 + 5 || fab.y in d2 - 5.. d2 + 5) {
+                        var intent = Intent(this, UniverseActivity::class.java)
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP){
+                            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                        } else startActivity(intent)
+                    }
+                }
+                else -> {
+                    return@setOnTouchListener false
+                }
+            }
+            true
+        }
     }
 
     override fun onItemClick(item: String, position: Int) {

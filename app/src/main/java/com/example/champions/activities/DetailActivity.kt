@@ -1,9 +1,11 @@
 package com.example.champions.activities
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -38,18 +40,27 @@ class DetailActivity : AppCompatActivity() {
         }
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
-        mUrl = intent.getStringExtra("url")
-        Volley.newRequestQueue(this).add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
-            mJsoup = Jsoup.parse(response)
-            mViewPager.adapter = mAdapter
-            mImvTemp.visibility = View.GONE
-            mViewPager.visibility = View.VISIBLE
-        }, Response.ErrorListener {}))
+        if (isConnectedNetwork()) {
+            val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
+            mUrl = intent.getStringExtra("url")
+            Volley.newRequestQueue(this)
+                .add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
+                    mJsoup = Jsoup.parse(response)
+                    mViewPager.adapter = mAdapter
+                    mImvTemp.visibility = View.GONE
+                    mViewPager.visibility = View.VISIBLE
+                }, Response.ErrorListener {}))
 
-        mViewPager.setPageTransformer(false, mAdapter)
-        mViewPager.offscreenPageLimit = 2
-        mTabLayout.setupWithViewPager(mViewPager)
+            mViewPager.setPageTransformer(false, mAdapter)
+            mViewPager.offscreenPageLimit = 2
+            mTabLayout.setupWithViewPager(mViewPager)
+        } else mTvNoNetwork.visibility = View.VISIBLE
+    }
+
+    fun isConnectedNetwork(): Boolean {
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetworkInfo
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 
     fun setTitle(title: String) {
