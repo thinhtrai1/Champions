@@ -40,27 +40,19 @@ class DetailActivity : AppCompatActivity() {
         }
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        if (isConnectedNetwork()) {
-            val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
-            mUrl = intent.getStringExtra("url")
-            Volley.newRequestQueue(this)
-                .add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
-                    mJsoup = Jsoup.parse(response)
-                    mViewPager.adapter = mAdapter
-                    mImvTemp.visibility = View.GONE
-                    mViewPager.visibility = View.VISIBLE
-                }, Response.ErrorListener {}))
+        val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
+        mUrl = intent.getStringExtra("url")
+        Volley.newRequestQueue(this)
+            .add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
+                mJsoup = Jsoup.parse(response)
+                mViewPager.adapter = mAdapter
+                mImvTemp.visibility = View.GONE
+                mViewPager.visibility = View.VISIBLE
+            }, Response.ErrorListener {}))
 
-            mViewPager.setPageTransformer(false, mAdapter)
-            mViewPager.offscreenPageLimit = 2
-            mTabLayout.setupWithViewPager(mViewPager)
-        } else mTvNoNetwork.visibility = View.VISIBLE
-    }
-
-    fun isConnectedNetwork(): Boolean {
-        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetworkInfo
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        mViewPager.setPageTransformer(false, mAdapter)
+        mViewPager.offscreenPageLimit = 2
+        mTabLayout.setupWithViewPager(mViewPager)
     }
 
     fun setTitle(title: String) {

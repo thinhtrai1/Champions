@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "862911986770",
+    "firebase_url": "https://champions-ead55.firebaseio.com",
+    "project_id": "champions-ead55",
+    "storage_bucket": "champions-ead55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862911986770:android:9bfb6e3dee64716264738b",
+        "android_client_info": {
+          "package_name": "com.example.champions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862911986770-sfmido7gpmqvqgtlp47ts3ihu082s40a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe5R9Ihm86XPa2iOqaNsW1ljS8UWo4AEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862911986770-sfmido7gpmqvqgtlp47ts3ihu082s40a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

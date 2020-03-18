@@ -25,16 +25,6 @@
         android:layout_height="wrap_content"
         app:tabIndicatorColor="#000" />
 
-    <TextView
-        android:id="@+id/mTvNoNetwork"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/arbutus"
-        android:gravity="center_horizontal"
-        android:text="đmm éo có mạng"
-        android:textSize="20dp"
-        android:visibility="gone" />
-
     <ImageView
         android:id="@+id/mImvTemp"
         android:layout_width="match_parent"

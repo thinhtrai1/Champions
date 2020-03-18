@@ -35,6 +35,7 @@ class ChampSkinFragment: Fragment() {
         mViewPagerSkin.clipToPadding = false
         mViewPagerSkin.setPadding(metrics.widthPixels / 3, 0, metrics.widthPixels / 3, 0)
         mViewPagerSkin.layoutParams = layoutParams
+        mViewPagerSkin.offscreenPageLimit = 10
 
         var pagerImageAdapter = SkinViewPagerAdapterImageView(mActivity, mList)
         mViewPagerSkinImageView.adapter = pagerImageAdapter
