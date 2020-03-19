@@ -68,7 +68,7 @@ class UniverseActivity : AppCompatActivity() {
         Picasso.get().load("https://universe.leagueoflegends.com/images/latestBg_Wallpaper.png")
             .placeholder(R.drawable.image_default).into(mImage0)
 
-        val namesAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mNames)
+        val namesAdapter = ArrayAdapter(this, R.layout.item_listview_story, mNames)
         mLvUniverse.adapter = namesAdapter
 
         var mRef = FirebaseDatabase.getInstance().reference
@@ -86,8 +86,9 @@ class UniverseActivity : AppCompatActivity() {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 var mStory = p0.getValue(Story::class.java)!!
                 mStories.add(mStory)
-                if (mStories.size > 5) {
-                    mNames.add(mStory.name)
+                val size = mStories.size
+                if (size > 5) {
+                    mNames.add("" + (size - 5) + ".  " + mStory.name)
                     namesAdapter.notifyDataSetChanged()
                 }
                 if (mStories.size - 1 == mWait)
