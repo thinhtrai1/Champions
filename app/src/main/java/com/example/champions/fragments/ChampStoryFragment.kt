@@ -12,8 +12,19 @@ import com.example.champions.R
 import com.example.champions.activities.DetailActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_champ_story.*
+import org.jsoup.nodes.Document
 
 class ChampStoryFragment : Fragment() {
+    private lateinit var mJsoup: Document
+
+    companion object {
+        fun newInstance(jsoup: Document): ChampStoryFragment {
+            return ChampStoryFragment().apply {
+                mJsoup = jsoup
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,24 +36,23 @@ class ChampStoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var mActivity = activity as DetailActivity
-
-        var name = mActivity.mJsoup
+        val name = mJsoup
             .getElementsByClass("style__Title-sc-14gxj1e-3 iLTyui")[0]
             .getElementsByTag("span")[0]
             .text()
-        mActivity.setTitle(name)
-        var nickname = mActivity.mJsoup
+        (context as DetailActivity).setTitle(name)
+
+        val nickname = mJsoup
             .getElementsByClass("style__Intro-sc-14gxj1e-2 fmCNnE")[0]
             .getElementsByTag("span")[0]
             .text()
         mTvNickname.text = nickname
-        var story = mActivity.mJsoup
+        val story = mJsoup
             .getElementsByClass("style__Desc-sc-1o884zt-9 hZPZqS")[0]
             .getElementsByTag("p")[0]
             .text()
         mTvStory.text = story.split(" See More")[0]
-        var image = mActivity.mJsoup
+        val image = mJsoup
             .getElementsByClass("style__BackgroundImage-sc-1o884zt-2 cIdAXF")[0]
             .getElementsByTag("img")
             .attr("src")

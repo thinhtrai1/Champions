@@ -20,8 +20,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="2dp"
-            android:paddingVertical="5dp" />
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
     </LinearLayout>
-
 </ScrollView>

@@ -13,6 +13,8 @@ import android.transition.Explode
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
@@ -30,12 +32,12 @@ import kotlinx.android.synthetic.main.activity_universe.*
 import kotlinx.android.synthetic.main.dialog_story.*
 
 class UniverseActivity : AppCompatActivity() {
-    var mNames = ArrayList<String>()
-    var mNamesHold = ArrayList<String>()
-    lateinit var mAdapter: ArrayAdapter<String>
-    var mStories = ArrayList<Story>()
-    var mWait = -1
-    lateinit var mPref: SharedPreferences
+    private val mNames = ArrayList<String>()
+    private val mNamesHold = ArrayList<String>()
+    private lateinit var mAdapter: ArrayAdapter<String>
+    private val mStories = ArrayList<Story>()
+    private var mWait = -1
+    private lateinit var mPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +68,7 @@ class UniverseActivity : AppCompatActivity() {
         mLvUniverse.isFocusable = false
         load()
 
-        var mRef = FirebaseDatabase.getInstance().reference
+        val mRef = FirebaseDatabase.getInstance().reference
         mRef.child("Stories").addChildEventListener(object: ChildEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
@@ -79,14 +81,14 @@ class UniverseActivity : AppCompatActivity() {
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                var mStory = p0.getValue(Story::class.java)!!
+                val mStory = p0.getValue(Story::class.java)!!
                 mStories.add(mStory)
                 val size = mStories.size
                 if (size == 5 && mStory.update != mPref.getString("54", "")) {
                     reSave()
                 }
                 if (size > 5) {
-                    var name =
+                    val name =
                     if (mStory.champ != null) "" + (size - 5) + ".  " + mStory.name + " [" + mStory.champ + "]"
                     else "" + (size - 5) + ".  " + mStory.name
                     mNames.add(name)
@@ -121,7 +123,7 @@ class UniverseActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 mNames.clear()
                 mNames.addAll(mNamesHold)
-                var temp = ArrayList<String>()
+                val temp = ArrayList<String>()
                 for (name: String in mNames)
                     if (name.toLowerCase().contains(mEdtSearch.text.toString().toLowerCase()))
                         temp.add(name)
@@ -180,20 +182,20 @@ class UniverseActivity : AppCompatActivity() {
         if (mStories.size > pos) {
             mWait = -1
             if (mStories[pos].web == 0) {
-                var dialog = Dialog(this)
-                dialog.setContentView(R.layout.dialog_story)
-                dialog.show()
-                dialog.mTvDialogStory.text = mStories[pos].name + "\n\n" + mStories[pos].story
-                if (mStories[pos].image != null)
-                    Picasso.get().load(mStories[pos].image).placeholder(R.drawable.image_default).into(
-                        dialog.mImvDialogStory
-                    )
-                else dialog.mImvDialogStory.visibility = View.GONE
+                Dialog(this).apply {
+                    setContentView(R.layout.dialog_story)
+                    window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
+                    show()
+                    mTvDialogStory.text = mStories[pos].name + "\n\n" + mStories[pos].story
+                    if (mStories[pos].image != null) {
+                        Picasso.get().load(mStories[pos].image).placeholder(R.drawable.image_default).into(mImvDialogStory)
+                    } else mImvDialogStory.visibility = View.GONE
+                }
             } else {
-                var wvZed = WebView(this)
+                val wvZed = WebView(this)
                 wvZed.webViewClient = WebViewClient()
                 wvZed.loadUrl(mStories[pos].story)
-                var webSettings = wvZed.settings
+                val webSettings = wvZed.settings
                 webSettings.javaScriptEnabled = true
                 webSettings.loadWithOverviewMode = true
                 webSettings.useWideViewPort = true
@@ -212,7 +214,7 @@ class UniverseActivity : AppCompatActivity() {
         val name = ""
         val story = ""
         val image: String? = null
-        val web = 0
+        var web = 0
         val sub = ""
         val champ: String? = null
         val update = ""

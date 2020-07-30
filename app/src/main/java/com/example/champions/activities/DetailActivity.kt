@@ -1,35 +1,30 @@
 package com.example.champions.activities
 
-import android.app.Dialog
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
-import android.widget.ImageView
+import androidx.viewpager.widget.ViewPager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.champions.R
 import com.example.champions.adapters.DetailViewPagerAdapter
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import java.lang.Exception
+import kotlin.math.abs
 
-class DetailActivity : AppCompatActivity() {
-    var mUrl = ""
-    var mCurrent = 0
-    lateinit var mJsoup: Document
+class DetailActivity : AppCompatActivity(), ViewPager.PageTransformer {
+    private lateinit var mUrl: String
+    private lateinit var mJsoup: Document
+
+    companion object {
+        private const val MIN_SCALE = 0.85f
+        private const val MIN_ALPHA = 0.5f
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,20 +32,21 @@ class DetailActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            }
         }
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
-        val mAdapter = DetailViewPagerAdapter(supportFragmentManager)
-        mUrl = intent.getStringExtra("url")
+        mUrl = intent.getStringExtra("url")!!
         Volley.newRequestQueue(this)
             .add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
                 mJsoup = Jsoup.parse(response)
-                mViewPager.adapter = mAdapter
+                mViewPager.adapter = DetailViewPagerAdapter(supportFragmentManager, mJsoup)
                 mImvTemp.visibility = View.GONE
                 mViewPager.visibility = View.VISIBLE
             }, Response.ErrorListener {}))
 
-        mViewPager.setPageTransformer(false, mAdapter)
+        mViewPager.setPageTransformer(false, this)
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
     }
@@ -59,27 +55,38 @@ class DetailActivity : AppCompatActivity() {
         mTvTitle.text = title
     }
 
-    fun zoom(url: String) {
-        var dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
-        dialog.setContentView(R.layout.dialog_image)
-        dialog.show()
-        var imageView = dialog.findViewById<ImageView>(R.id.mImageZoom)
-        imageView.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate))
-        Picasso.get().load(url).placeholder(R.drawable.image_default).into(object: Target{
-            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            }
+    override fun transformPage(view: View, position: Float) {
+        view.apply {
+            val pageWidth = width
+            val pageHeight = height
+            when {
+                position < -1 -> {
+                    alpha = 0f
+                }
+                position <= 1 -> {
+                    val scaleFactor = MIN_SCALE.coerceAtLeast(1 - abs(position))
+                    val verMargin = pageHeight * (1 - scaleFactor) / 2
+                    val horMargin = pageWidth * (1 - scaleFactor) / 2
+                    translationX = if (position < 0) {
+                        horMargin - verMargin / 2
+                    } else {
+                        horMargin + verMargin / 2
+                    }
 
-            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-            }
+                    scaleX = scaleFactor
+                    scaleY = scaleFactor
 
-            override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom?) {
-                imageView.setImageBitmap(bitmap.rotate(90F))
+                    alpha = (MIN_ALPHA + (((scaleFactor - MIN_SCALE) / (1 - MIN_SCALE)) * (1 - MIN_ALPHA)))
+                }
+                else -> {
+                    alpha = 0f
+                }
             }
-        })
+        }
     }
 
-    fun Bitmap.rotate(degrees: Float): Bitmap {
-        val matrix = Matrix().apply { postRotate(degrees) }
-        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
-    }
+//    fun Bitmap.rotate(degrees: Float): Bitmap {
+//        val matrix = Matrix().apply { postRotate(degrees) }
+//        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
+//    }
 }

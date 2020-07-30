@@ -38,7 +38,7 @@
                     android:rotation="-35"
                     android:text="TÊN CỦA LƯỠI KIẾM"
                     android:textColor="#FFF"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -50,7 +50,7 @@
                     android:fontFamily="monospace"
                     android:text="Mùi đồng trong không khí"
                     android:textColor="#FFF"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
             </FrameLayout>
 
@@ -81,7 +81,7 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="monospace"
                         android:textColor="#F00"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                 </FrameLayout>
 
@@ -108,7 +108,7 @@
                         android:layout_marginBottom="5dp"
                         android:fontFamily="monospace"
                         android:textColor="#FF9800"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                 </FrameLayout>
             </LinearLayout>
@@ -134,7 +134,7 @@
                     android:rotation="15"
                     android:text="MŨI TÊN, VÀ PHI ĐAO"
                     android:textColor="#FFF"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -147,7 +147,7 @@
                     android:gravity="center_horizontal"
                     android:text="Ma thuật thoang thoảng trong không khí nơi miền nam Shon-Xan."
                     android:textColor="#FFF"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
             </FrameLayout>
 
@@ -171,7 +171,7 @@
                     android:gravity="center"
                     android:text="THÙNG RỖNG KÊU TO"
                     android:textColor="#FFF"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -184,7 +184,7 @@
                     android:gravity="center_horizontal"
                     android:text="Bố mày hỏi thằng nào trông chừng hòm tiền?"
                     android:textColor="#FFF"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
             </FrameLayout>
         </LinearLayout>
@@ -192,12 +192,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:fontFamily="monospace"
             android:gravity="center_horizontal"
-            android:paddingHorizontal="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:text="Created by Thịnh's Đức\nIngame: Codead\nSource: na.leagueoflegends.com\nv1.0319"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/mEdtSearch"
@@ -209,13 +211,14 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:padding="5dp"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ListView
             android:id="@+id/mLvUniverse"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:nestedScrollingEnabled="true" />
 
         <ImageView

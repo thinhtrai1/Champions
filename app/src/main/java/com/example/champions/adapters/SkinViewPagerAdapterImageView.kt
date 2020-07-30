@@ -1,21 +1,25 @@
 package com.example.champions.adapters
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.champions.IOnItemClickListener
 import com.example.champions.R
-import com.example.champions.activities.DetailActivity
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_champ_skin.*
 import kotlin.math.abs
 
-class SkinViewPagerAdapterImageView(var mContext: Context, var mList: ArrayList<String>) : PagerAdapter(), ViewPager.PageTransformer, ViewPager.OnPageChangeListener{
-    private val MIN_SCALE = 0.75f
-    var a = mContext as DetailActivity
+class SkinViewPagerAdapterImageView(
+    private val mContext: Context,
+    private val mList: ArrayList<String>,
+    private val mOnClick: IOnItemClickListener
+) : PagerAdapter(), ViewPager.PageTransformer {
+
+    companion object {
+        private const val MIN_SCALE = 0.75f
+    }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
@@ -26,16 +30,15 @@ class SkinViewPagerAdapterImageView(var mContext: Context, var mList: ArrayList<
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        var view = LayoutInflater.from(mContext).inflate(R.layout.item_view_pager_skin_image_view, container, false)
-        val mImageView = view.findViewById<ImageView>(R.id.mImageViewSkin)
-        Picasso.get().load(mList[position]).placeholder(R.drawable.image_default).into(mImageView)
+        val imageView = ImageView(mContext)
+        Picasso.get().load(mList[position]).placeholder(R.drawable.image_default).into(imageView)
 
-        mImageView.setOnClickListener {
-            a.zoom(mList[a.mCurrent])
+        imageView.setOnClickListener {
+            mOnClick.onItemClick(-1)
         }
 
-        container.addView(view)
-        return view
+        container.addView(imageView)
+        return imageView
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
@@ -61,20 +64,6 @@ class SkinViewPagerAdapterImageView(var mContext: Context, var mList: ArrayList<
                 }
                 else -> alpha = 0f
             }
-        }
-    }
-
-    override fun onPageScrollStateChanged(state: Int) {
-
-    }
-
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-    }
-
-    override fun onPageSelected(position: Int) {
-        if (a.mViewPagerSkin.currentItem != position) {
-            a.mViewPagerSkin.setCurrentItem(position, true)
-            a.mCurrent = position
         }
     }
 }

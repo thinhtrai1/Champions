@@ -38,9 +38,10 @@
         android:id="@+id/mTvSKillName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:textColor="#000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:fontFamily="monospace" />
 
     <TextView
@@ -51,7 +52,7 @@
         android:padding="5dp"
         android:scrollbars="vertical"
         android:textColor="#000"
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:fontFamily="monospace" />
 
     <LinearLayout
@@ -70,13 +71,12 @@
                 android:id="@+id/tvKeyP"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:autoSizeMinTextSize="8sp"
-                android:autoSizeTextType="uniform"
+                app:autoSizeMaxTextSize="20sp"
+                app:autoSizeMinTextSize="5dp"
                 android:gravity="bottom"
                 android:padding="5dp"
                 android:text="PASSIVE"
                 android:textColor="#000"
-                android:textSize="20dp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
                 app:fontFamily="monospace" />
@@ -105,7 +105,7 @@
                 android:paddingBottom="5dp"
                 android:text="Q"
                 android:textColor="#000"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:fontFamily="monospace" />
 
@@ -133,7 +133,7 @@
                 android:paddingBottom="5dp"
                 android:text="W"
                 android:textColor="#000"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:fontFamily="monospace" />
 
@@ -161,7 +161,7 @@
                 android:paddingBottom="5dp"
                 android:text="E"
                 android:textColor="#000"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:fontFamily="monospace" />
 
@@ -189,7 +189,7 @@
                 android:paddingBottom="5dp"
                 android:text="R"
                 android:textColor="#000"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:fontFamily="monospace" />
 

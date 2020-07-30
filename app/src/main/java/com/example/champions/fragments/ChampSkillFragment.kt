@@ -10,15 +10,24 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.example.champions.R
-import com.example.champions.activities.DetailActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_champ_skill.*
+import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 class ChampSkillFragment: Fragment() {
-    private var mSkillList: ArrayList<String> = ArrayList()
-    private var mDesList: ArrayList<String> = ArrayList()
-    private var mVideoList: ArrayList<String> = ArrayList()
+    private val mSkillList: ArrayList<String> = ArrayList()
+    private val mDesList: ArrayList<String> = ArrayList()
+    private val mVideoList: ArrayList<String> = ArrayList()
+    private lateinit var mJsoup: Document
+
+    companion object {
+        fun newInstance(jsoup: Document): ChampSkillFragment {
+            return ChampSkillFragment().apply {
+                mJsoup = jsoup
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_champ_skill, container, false)
@@ -26,16 +35,15 @@ class ChampSkillFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var mActivity = activity as DetailActivity
         mImvPlay.visibility = View.GONE
         mProgressBar.visibility = View.VISIBLE
 
         val metrics = DisplayMetrics()
-        mActivity.windowManager.defaultDisplay.getMetrics(metrics)
+        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
         val layoutParams = LinearLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels * 15 / 22)
         mVdvSKill.layoutParams = layoutParams
 
-        var skills = mActivity.mJsoup
+        val skills = mJsoup
             .getElementsByClass("style__WrapperInner-sc-18a4qs7-1 gFNUaI")[0]
             .getElementsByTag("button")
         for (item: Element in skills) {
@@ -47,14 +55,14 @@ class ChampSkillFragment: Fragment() {
         Picasso.get().load(mSkillList[3]).placeholder(R.drawable.image_default).into(mImvSkill3)
         Picasso.get().load(mSkillList[4]).placeholder(R.drawable.image_default).into(mImvSkill4)
 
-        var dess = mActivity.mJsoup
+        val descriptions = mJsoup
             .getElementsByClass("style__AbilityInfoList-ulelzu-7 kAlIxD")[0]
             .getElementsByTag("li")
-        for (item: Element in dess) {
+        for (item: Element in descriptions) {
             mDesList.add(item.getElementsByTag("h5")[0].text() + "###" + item.getElementsByTag("p")[0].text())
         }
 
-        var videos = mActivity.mJsoup
+        val videos = mJsoup
             .getElementsByClass("style__VideoContainer-tmew42-2 cvZjKa")[0]
             .getElementsByTag("video")
         for (i in 0..4) {

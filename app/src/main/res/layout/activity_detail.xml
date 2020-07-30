@@ -16,7 +16,7 @@
         android:padding="5dp"
         android:textAllCaps="true"
         android:textColor="#000"
-        android:textSize="32dp"
+        android:textSize="32sp"
         app:fontFamily="@font/arbutus" />
 
     <com.google.android.material.tabs.TabLayout

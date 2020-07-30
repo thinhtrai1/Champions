@@ -17,10 +17,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:paddingHorizontal="5dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:textAllCaps="true"
         android:textColor="#000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:fontFamily="monospace" />
 
     <TextView
@@ -33,6 +34,5 @@
         android:fontFamily="monospace"
         android:padding="5dp"
         android:textColor="#000"
-        android:textSize="15dp" />
-
+        android:textSize="15sp" />
 </LinearLayout>
