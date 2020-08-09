@@ -24,5 +24,24 @@
             android:paddingEnd="2dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
+
+        <ImageView
+            android:id="@+id/mImvDialogStorySub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:adjustViewBounds="true" />
+
+        <TextView
+            android:id="@+id/mTvDialogStory_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:fontFamily="monospace"
+            android:gravity="center_horizontal"
+            android:paddingStart="2dp"
+            android:paddingEnd="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
     </LinearLayout>
 </ScrollView>

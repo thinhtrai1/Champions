@@ -10,18 +10,14 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.Explode
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import androidx.core.view.setMargins
 import com.example.champions.R
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -47,15 +43,15 @@ class UniverseActivity : AppCompatActivity() {
             window.enterTransition = (Explode().setDuration(2000))
         }
 
-        val metrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(metrics)
-        val layout1 = LinearLayout.LayoutParams(metrics.widthPixels - 20.toPx(), (metrics.widthPixels - 20.toPx()) * 1013 / 1800)
-        layout1.setMargins(5.toPx())
-        layout_1.layoutParams = layout1
-        val layout2 = LinearLayout.LayoutParams((metrics.widthPixels - 30.toPx()) / 2, ((metrics.widthPixels - 30.toPx()) / 2) * 1013 / 1800)
-        layout2.setMargins(5.toPx())
-        layout_2.layoutParams = layout2
-        layout_3.layoutParams = layout2
+//        val metrics = DisplayMetrics()
+//        windowManager.defaultDisplay.getMetrics(metrics)
+//        val layout1 = LinearLayout.LayoutParams(metrics.widthPixels - 20.toPx(), (metrics.widthPixels - 20.toPx()) * 1013 / 1800)
+//        layout1.setMargins(5.toPx())
+//        layout_1.layoutParams = layout1
+//        val layout2 = LinearLayout.LayoutParams((metrics.widthPixels - 30.toPx()) / 2, ((metrics.widthPixels - 30.toPx()) / 2) * 1013 / 1800)
+//        layout2.setMargins(5.toPx())
+//        layout_2.layoutParams = layout2
+//        layout_3.layoutParams = layout2
 
         val rotateAnimation = RotateAnimation(0f, 3600f
             , Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
@@ -186,10 +182,24 @@ class UniverseActivity : AppCompatActivity() {
                     setContentView(R.layout.dialog_story)
                     window?.attributes?.width = WindowManager.LayoutParams.MATCH_PARENT
                     show()
-                    mTvDialogStory.text = mStories[pos].name + "\n\n" + mStories[pos].story
-                    if (mStories[pos].image != null) {
-                        Picasso.get().load(mStories[pos].image).placeholder(R.drawable.image_default).into(mImvDialogStory)
-                    } else mImvDialogStory.visibility = View.GONE
+                    mStories[pos].let {
+                        if (it.subImage == null) {
+                            mTvDialogStory.text = it.name + "\n\n" + it.story
+                        } else {
+                            mTvDialogStory.text = it.name
+                            if (it.story.split("com.champions.split")[0].isNotBlank()) {
+                                mTvDialogStory.append("\n\n" + it.story.split("com.champions.split")[0])
+                            }
+                            mTvDialogStory_2.visibility = View.VISIBLE
+                            mTvDialogStory_2.text = it.story.split("com.champions.split")[1]
+                            mImvDialogStorySub.visibility = View.VISIBLE
+                            Picasso.get().load(it.subImage).placeholder(R.drawable.image_default).into(mImvDialogStorySub)
+                        }
+                        if (it.image != null) {
+                            Picasso.get().load(it.image).placeholder(R.drawable.image_default).into(mImvDialogStory)
+                        } else mImvDialogStory.visibility = View.GONE
+                    }
+
                 }
             } else {
                 val wvZed = WebView(this)
@@ -206,18 +216,14 @@ class UniverseActivity : AppCompatActivity() {
         }
     }
 
-    private fun Int.toPx(): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), resources.displayMetrics).toInt()
-    }
-
     class Story {
         val name = ""
         val story = ""
         val image: String? = null
+        val subImage: String? = null
         var web = 0
         val sub = ""
         val champ: String? = null
         val update = ""
-        fun Story() {}
     }
 }

@@ -23,7 +23,6 @@ import org.jsoup.nodes.Element
 class ChampSkinFragment: Fragment() {
     private lateinit var mJsoup: Document
     private val mList: ArrayList<String> = ArrayList()
-    private var mCurrent = 0
 
     companion object {
         fun newInstance(jsoup: Document): ChampSkinFragment {
@@ -81,7 +80,7 @@ class ChampSkinFragment: Fragment() {
 
         val pagerImageAdapter = SkinViewPagerAdapterImageView(context!!, mList, object : IOnItemClickListener {
             override fun onItemClick(position: Int) {
-                zoom(mList[mCurrent])
+                zoom(mList[mViewPagerSkinImageView.currentItem])
             }
         })
         mViewPagerSkinImageView.adapter = pagerImageAdapter
@@ -99,7 +98,6 @@ class ChampSkinFragment: Fragment() {
 
             override fun onPageSelected(position: Int) {
                 mViewPagerSkin.setCurrentItem(position, true)
-                mCurrent = position
             }
         })
     }
