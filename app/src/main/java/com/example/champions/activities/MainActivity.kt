@@ -1,51 +1,44 @@
 package com.example.champions.activities
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
-import androidx.recyclerview.widget.GridLayoutManager
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.example.champions.IOnItemClickListener
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.champions.adapters.MainRecyclerViewAdapter
 import com.example.champions.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 
 class MainActivity : AppCompatActivity() {
-    private val mChampList: ArrayList<String> = ArrayList()
-    private val mDetailList: ArrayList<String> = ArrayList()
-    private val mUrl = "https://na.leagueoflegends.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val mAdapter = MainRecyclerViewAdapter(mChampList, object : IOnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                intent.putExtra("url", mDetailList[position])
-                startActivity(intent)
-            }})
-
-        mGridView.adapter = mAdapter
-        mGridView.layoutManager = GridLayoutManager(this, 2)
-
-        val stringRequest = StringRequest(Request.Method.GET, "$mUrl/en-us/champions/", Response.Listener<String> { response ->
-            val elements = Jsoup.parse(response).getElementsByClass("style__List-ntddd-2 fqjuPM")[0].getElementsByTag("a")
-            for (element: Element in elements) {
-                mDetailList.add(mUrl + element.attr("href"))
+        Thread {
+            val mChampList = ArrayList<String>()
+            val mDetailList = ArrayList<String>()
+            val elements = Jsoup.connect(URL.plus("/en-us/champions/")).get().getElementsByClass("style__List-ntddd-2 fqjuPM")[0].getElementsByTag("a")
+            for (element in elements) {
+                mDetailList.add(URL + element.attr("href"))
                 mChampList.add(element.getElementsByTag("img")[0].attr("src"))
             }
-            mAdapter.notifyDataSetChanged()
-        }, Response.ErrorListener {})
-        Volley.newRequestQueue(this).add(stringRequest)
+            runOnUiThread {
+                mGridView.layoutManager = StaggeredGridLayoutManager(2, 1)
+                mGridView.adapter = MainRecyclerViewAdapter(mChampList) {
+                    startActivity(Intent(this, DetailActivity::class.java).putExtra("url", mDetailList[it]))
+                }
+            }
+        }.start()
 
+        fab()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun fab() {
         var dX = 0f
         var dY = 0f
         var d1 = fab.x
@@ -60,10 +53,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 MotionEvent.ACTION_MOVE -> {
                     view.animate()
-                    .x(event.rawX + dX)
-                    .y(event.rawY + dY)
-                    .setDuration(0)
-                    .start()
+                        .x(event.rawX + dX)
+                        .y(event.rawY + dY)
+                        .setDuration(0)
+                        .start()
                 }
                 MotionEvent.ACTION_UP -> {
                     if (fab.x in d1 - 5.. d1 + 5 || fab.y in d2 - 5.. d2 + 5) {
@@ -79,5 +72,9 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    companion object {
+        const val URL = "https://na.leagueoflegends.com"
     }
 }

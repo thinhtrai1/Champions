@@ -10,25 +10,22 @@ import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.example.champions.IOnItemClickListener
 import com.example.champions.R
+import com.example.champions.activities.DetailActivity
 import com.example.champions.adapters.SkinViewPagerAdapter
 import com.example.champions.adapters.SkinViewPagerAdapterImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_champ_skin.*
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 class ChampSkinFragment: Fragment() {
-    private lateinit var mJsoup: Document
+    private val mJsoup by lazy { (context as DetailActivity).mJsoup }
     private val mList: ArrayList<String> = ArrayList()
 
     companion object {
-        fun newInstance(jsoup: Document): ChampSkinFragment {
-            return ChampSkinFragment().apply {
-                mJsoup = jsoup
-            }
+        fun newInstance(): ChampSkinFragment {
+            return ChampSkinFragment()
         }
     }
 
@@ -51,11 +48,9 @@ class ChampSkinFragment: Fragment() {
             mList.add(item.getElementsByTag("img")[0].attr("src"))
         }
 
-        val pagerAdapter = SkinViewPagerAdapter(context!!, mList, object : IOnItemClickListener {
-            override fun onItemClick(position: Int) {
-                mViewPagerSkin.setCurrentItem(position, true)
-            }
-        })
+        val pagerAdapter = SkinViewPagerAdapter(context!!, mList) {
+            mViewPagerSkin.setCurrentItem(it, true)
+        }
         mViewPagerSkin.adapter = pagerAdapter
         mViewPagerSkin.setPageTransformer(false, pagerAdapter)
         mViewPagerSkin.clipToPadding = false
@@ -78,11 +73,9 @@ class ChampSkinFragment: Fragment() {
             }
         })
 
-        val pagerImageAdapter = SkinViewPagerAdapterImageView(context!!, mList, object : IOnItemClickListener {
-            override fun onItemClick(position: Int) {
-                zoom(mList[mViewPagerSkinImageView.currentItem])
-            }
-        })
+        val pagerImageAdapter = SkinViewPagerAdapterImageView(context!!, mList) {
+            zoom(mList[mViewPagerSkinImageView.currentItem])
+        }
         mViewPagerSkinImageView.adapter = pagerImageAdapter
         mViewPagerSkinImageView.setPageTransformer(false, pagerImageAdapter)
         mViewPagerSkinImageView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

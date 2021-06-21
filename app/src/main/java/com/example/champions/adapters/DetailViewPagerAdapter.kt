@@ -8,11 +8,11 @@ import com.example.champions.fragments.ChampSkinFragment
 import com.example.champions.fragments.ChampStoryFragment
 import org.jsoup.nodes.Document
 
-class DetailViewPagerAdapter(fm: FragmentManager, document: Document): FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class DetailViewPagerAdapter(fm: FragmentManager): FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private val mFragments: ArrayList<Fragment> = arrayListOf(
-        ChampStoryFragment.newInstance(document),
-        ChampSkillFragment.newInstance(document),
-        ChampSkinFragment.newInstance(document)
+        ChampStoryFragment.newInstance(),
+        ChampSkillFragment.newInstance(),
+        ChampSkinFragment.newInstance()
     )
     private val mTitles = arrayListOf("STORY", "SKILL", "SKIN")
 

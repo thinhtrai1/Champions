@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.champions.IOnItemClickListener
 import com.example.champions.R
 import com.squareup.picasso.Picasso
 import kotlin.math.abs
@@ -14,7 +13,7 @@ import kotlin.math.abs
 class SkinViewPagerAdapterImageView(
     private val mContext: Context,
     private val mList: ArrayList<String>,
-    private val mOnClick: IOnItemClickListener
+    private val mOnClick: () -> Unit
 ) : PagerAdapter(), ViewPager.PageTransformer {
 
     companion object {
@@ -34,7 +33,7 @@ class SkinViewPagerAdapterImageView(
         Picasso.get().load(mList[position]).placeholder(R.drawable.image_default).into(imageView)
 
         imageView.setOnClickListener {
-            mOnClick.onItemClick(-1)
+            mOnClick()
         }
 
         container.addView(imageView)

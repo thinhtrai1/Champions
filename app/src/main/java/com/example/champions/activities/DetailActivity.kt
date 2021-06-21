@@ -6,10 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.viewpager.widget.ViewPager
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.example.champions.R
 import com.example.champions.adapters.DetailViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -19,7 +15,7 @@ import kotlin.math.abs
 
 class DetailActivity : AppCompatActivity(), ViewPager.PageTransformer {
     private lateinit var mUrl: String
-    private lateinit var mJsoup: Document
+    lateinit var mJsoup: Document
 
     companion object {
         private const val MIN_SCALE = 0.85f
@@ -37,18 +33,19 @@ class DetailActivity : AppCompatActivity(), ViewPager.PageTransformer {
             }
         }
 
-        mUrl = intent.getStringExtra("url")!!
-        Volley.newRequestQueue(this)
-            .add(StringRequest(Request.Method.GET, mUrl, Response.Listener<String> { response ->
-                mJsoup = Jsoup.parse(response)
-                mViewPager.adapter = DetailViewPagerAdapter(supportFragmentManager, mJsoup)
-                mImvTemp.visibility = View.GONE
-                mViewPager.visibility = View.VISIBLE
-            }, Response.ErrorListener {}))
-
         mViewPager.setPageTransformer(false, this)
         mViewPager.offscreenPageLimit = 2
         mTabLayout.setupWithViewPager(mViewPager)
+
+        Thread {
+            mUrl = intent.getStringExtra("url")!!
+            mJsoup = Jsoup.connect(mUrl).get()
+            runOnUiThread {
+                mViewPager.adapter = DetailViewPagerAdapter(supportFragmentManager)
+                mImvTemp.visibility = View.GONE
+                mViewPager.visibility = View.VISIBLE
+            }
+        }.start()
     }
 
     fun setTitle(title: String) {
@@ -84,9 +81,4 @@ class DetailActivity : AppCompatActivity(), ViewPager.PageTransformer {
             }
         }
     }
-
-//    fun Bitmap.rotate(degrees: Float): Bitmap {
-//        val matrix = Matrix().apply { postRotate(degrees) }
-//        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
-//    }
 }
