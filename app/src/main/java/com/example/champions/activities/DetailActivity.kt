@@ -39,7 +39,11 @@ class DetailActivity : AppCompatActivity(), ViewPager.PageTransformer {
 
         Thread {
             mUrl = intent.getStringExtra("url")!!
-            mJsoup = Jsoup.connect(mUrl).get()
+            try {
+                mJsoup = Jsoup.connect(mUrl).get()
+            } catch (e: Exception) {
+                return@Thread
+            }
             runOnUiThread {
                 mViewPager.adapter = DetailViewPagerAdapter(supportFragmentManager)
                 mImvTemp.visibility = View.GONE

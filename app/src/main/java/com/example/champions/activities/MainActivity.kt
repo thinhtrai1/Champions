@@ -11,6 +11,7 @@ import com.example.champions.adapters.MainRecyclerViewAdapter
 import com.example.champions.R
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +22,13 @@ class MainActivity : AppCompatActivity() {
         Thread {
             val mChampList = ArrayList<String>()
             val mDetailList = ArrayList<String>()
-            val elements = Jsoup.connect(URL.plus("/en-us/champions/")).get().getElementsByClass("style__List-ntddd-2 fqjuPM")[0].getElementsByTag("a")
+            val elements: Elements
+            try {
+                elements = Jsoup.connect(URL.plus("/en-us/champions/")).get()
+                    .getElementsByClass("style__List-ntddd-2 fqjuPM")[0].getElementsByTag("a")
+            } catch (e: Exception) {
+                return@Thread
+            }
             for (element in elements) {
                 mDetailList.add(URL + element.attr("href"))
                 mChampList.add(element.getElementsByTag("img")[0].attr("src"))

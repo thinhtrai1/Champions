@@ -1,13 +1,13 @@
 package com.example.champions.fragments
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.champions.R
@@ -17,7 +17,9 @@ import com.example.champions.adapters.SkinViewPagerAdapterImageView
 import com.github.chrisbanes.photoview.PhotoView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_champ_skin.*
+import kotlinx.android.synthetic.main.item_viewpager_custom.view.*
 import org.jsoup.nodes.Element
+import kotlin.math.abs
 
 class ChampSkinFragment: Fragment() {
     private val mJsoup by lazy { (context as DetailActivity).mJsoup }
@@ -37,8 +39,11 @@ class ChampSkinFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val metrics = DisplayMetrics()
-        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-        val layoutParams = LinearLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels / 3)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            activity!!.display?.getRealMetrics(metrics)
+        } else {
+            activity!!.windowManager.defaultDisplay.getMetrics(metrics)
+        }
 
         val items = mJsoup
             .getElementsByClass("style__CarouselContainer-sc-1tlyqoa-11 cUeBFP")[0]
@@ -48,51 +53,63 @@ class ChampSkinFragment: Fragment() {
             mList.add(item.getElementsByTag("img")[0].attr("src"))
         }
 
-        val pagerAdapter = SkinViewPagerAdapter(context!!, mList) {
-            mViewPagerSkin.setCurrentItem(it, true)
+        with(mViewPagerSkin) {
+            offscreenPageLimit = mList.size - 1
+            clipToPadding = false
+            adapter = SkinViewPagerAdapter(context!!, mList) {
+                setCurrentItem(it, true)
+            }
+            setPadding(metrics.widthPixels / 3, 0, metrics.widthPixels / 3, 0)
+            addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    mViewPagerSkinImageView.setCurrentItem(position, true)
+                }
+            })
+            setPageTransformer(false) { page, position ->
+                var scale = 1.3f
+                if (position > 1f) scale -= (position - 1) * 0.6f
+                else scale += (position - 1) * 0.6f
+                if (scale < 0) scale = 0f
+                page.cardView.apply {
+                    scaleX = scale
+                    scaleY = scale
+                }
+            }
         }
-        mViewPagerSkin.adapter = pagerAdapter
-        mViewPagerSkin.setPageTransformer(false, pagerAdapter)
-        mViewPagerSkin.clipToPadding = false
-        mViewPagerSkin.setPadding(metrics.widthPixels / 3, 0, metrics.widthPixels / 3, 0)
-        mViewPagerSkin.layoutParams = layoutParams
-        mViewPagerSkin.offscreenPageLimit = mList.size - 1
-        mViewPagerSkin.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
 
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
+        with(mViewPagerSkinImageView) {
+            adapter = SkinViewPagerAdapterImageView(context!!, mList) {
+                zoom(mList[currentItem])
             }
-
-            override fun onPageSelected(position: Int) {
-                mViewPagerSkinImageView.setCurrentItem(position, true)
+            addOnPageChangeListener(object :
+                ViewPager.SimpleOnPageChangeListener() {
+                override fun onPageSelected(position: Int) {
+                    mViewPagerSkin.setCurrentItem(position, true)
+                }
+            })
+            setPageTransformer(false) { page, position ->
+                page.apply {
+                    val pageWidth = width
+                    when {
+                        position < -1 -> alpha = 0f
+                        position <= 0 -> {
+                            alpha = 1f
+                            translationX = 0f
+                            scaleX = 1f
+                            scaleY = 1f
+                        }
+                        position <= 1 -> {
+                            alpha = 1 - position
+                            translationX = pageWidth * -position
+                            val scaleFactor = 0.75f + (1 - 0.75f) * (1 - abs(position))
+                            scaleX = scaleFactor
+                            scaleY = scaleFactor
+                        }
+                        else -> alpha = 0f
+                    }
+                }
             }
-        })
-
-        val pagerImageAdapter = SkinViewPagerAdapterImageView(context!!, mList) {
-            zoom(mList[mViewPagerSkinImageView.currentItem])
         }
-        mViewPagerSkinImageView.adapter = pagerImageAdapter
-        mViewPagerSkinImageView.setPageTransformer(false, pagerImageAdapter)
-        mViewPagerSkinImageView.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                mViewPagerSkin.setCurrentItem(position, true)
-            }
-        })
     }
 
     private fun zoom(url: String) {
